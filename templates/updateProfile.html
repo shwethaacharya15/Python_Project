@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f3f4f6, #dfe9f3);
+        }
+        .profile-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3498db;
+            margin-bottom: 15px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            background: linear-gradient(45deg, #36d1dc, #5b86e5);
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .file-input {
+            display: none;
+        }
+        .upload-btn {
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        /* Flash Messages */
+#flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+/* General Flash Message Styling */
+.flash-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Flash Message Colors */
+.flash-message.success {
+    background: linear-gradient(45deg, #28a745, #218838);
+    border-left: 5px solid #1e7e34;
+}
+
+.flash-message.danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border-left: 5px solid #bd2130;
+}
+
+.flash-message.warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+    border-left: 5px solid #d39e00;
+}
+
+.flash-message.info {
+    background: linear-gradient(45deg, #17a2b8, #138496);
+    border-left: 5px solid #117a8b;
+}
+
+/* Close Button */
+.flash-message .close-btn {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: white;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.flash-message .close-btn:hover {
+    color: #000;
+}
+
+/* Auto-dismiss animation */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.flash-message.auto-dismiss {
+    animation: fadeOut 5s forwards;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+    </style>
+</head>
+<body>
+
+
+    <!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div id="flash-messages">
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
+    <div class="profile-container">
+        <h2>Update Profile</h2>
+        <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic" id="profilePreview">
+        <br>
+        <label for="profilePic" class="upload-btn">Choose Profile Picture</label>
+        <input type="file" id="profilePic" class="file-input" accept="image/*" onchange="previewImage(event)">
+        
+        <form action="#" method="POST">
+            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="Last Name" required>
+            <input type="email" value="admin@qaoncloud.com" disabled>
+            <input type="tel" placeholder="Phone Number" required>
+            <button type="submit">Update Profile</button>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+
+        </form>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById('profilePreview').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>

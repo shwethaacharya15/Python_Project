@@ -150,3 +150,80 @@ button:hover {
 .container.slide .form-container {
     transform: translateX(-100%);
 }
+
+
+/* Flash Messages */
+#flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: auto;
+    max-width: 400px;
+}
+
+/* General Flash Message Styling */
+.flash-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Success Message */
+.flash-message.success {
+    background: linear-gradient(45deg, #28a745, #218838);
+    border-left: 5px solid #1e7e34;
+}
+
+/* Error Message */
+.flash-message.danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border-left: 5px solid #bd2130;
+}
+
+/* Warning Message */
+.flash-message.warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+    border-left: 5px solid #d39e00;
+}
+
+/* Info Message */
+.flash-message.info {
+    background: linear-gradient(45deg, #17a2b8, #138496);
+    border-left: 5px solid #117a8b;
+}
+
+/* Close Button */
+.flash-message .close-btn {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: white;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.flash-message .close-btn:hover {
+    color: #000;
+}
+
+/* Auto-dismiss animation */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.flash-message.auto-dismiss {
+    animation: fadeOut 5s forwards;
+}

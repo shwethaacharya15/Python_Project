@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style> 
+        /* Flash Messages */
+#flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+/* General Flash Message Styling */
+.flash-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Flash Message Colors */
+.flash-message.success {
+    background: linear-gradient(45deg, #28a745, #218838);
+    border-left: 5px solid #1e7e34;
+}
+
+.flash-message.danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border-left: 5px solid #bd2130;
+}
+
+.flash-message.warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+    border-left: 5px solid #d39e00;
+}
+
+.flash-message.info {
+    background: linear-gradient(45deg, #17a2b8, #138496);
+    border-left: 5px solid #117a8b;
+}
+
+/* Close Button */
+.flash-message .close-btn {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: white;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.flash-message .close-btn:hover {
+    color: #000;
+}
+
+/* Auto-dismiss animation */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.flash-message.auto-dismiss {
+    animation: fadeOut 5s forwards;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      <div id="flash-messages">
+          {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                  {{ message }}
+                  <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+              </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+{% endwith %}
+
+<h1 class="main-title">User Registration</h1>
+
+<div class="container">
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h2>Welcome Back!</h2>
+                <p>To keep connected with us, please log in.</p>
+                <button class="toggle-btn" id="loginToggle">Login</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h2>New Here?</h2>
+                <p>Enter your details and join us!</p>
+                <button class="toggle-btn" id="signInToggle">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="form-box">
+            <!-- Login Form -->
+            <form id="loginForm" action="{{ url_for('login') }}" method="POST">
+                <h2>Login</h2>
+                <input type="email" name="email" placeholder="Enter Email" required>
+                <input type="password" name="password" placeholder="Enter Password" required>
+                <button type="submit">Login</button>
+            </form>
+
+            <!-- Sign In Form -->
+            <form id="signInForm" action="{{ url_for('user_register') }}" method="POST">
+                <h2>Sign In</h2>
+                <input type="text" name="username" placeholder="Enter Username" required>
+                <input type="email" name="email" placeholder="Enter Email" required>
+                <input type="password" name="password" placeholder="Enter Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        document.querySelectorAll(".flash-message").forEach(msg => {
+            msg.style.opacity = "0";
+            msg.style.transform = "translateY(-10px)";
+            setTimeout(() => msg.remove(), 500);
+        });
+    }, 5000);
+});
+</script>
+</body>
+</html>
